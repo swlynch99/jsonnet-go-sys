@@ -21,11 +21,13 @@ BINDGEN_ARGS=(
     --allowlist-item 'jsonnet_.*'
 )
 
-clang -E target/bindings/libjsonnet.h   \
+HEADER=go-jsonnet/cpp-jsonnet/include/libjsonnet.h
+
+clang -E "$HEADER"                      \
     -o target/bindings/libjsonnet.i     \
     "${CLANG_ARGS[@]}"
 
-bindgen target/bindings/libjsonnet.h    \
+bindgen "$HEADER"                       \
     -o target/bindings/bindings.rs      \
     "${BINDGEN_ARGS[@]}"                \
     --                                  \
