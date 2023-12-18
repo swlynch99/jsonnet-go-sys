@@ -12,7 +12,7 @@ go build -buildmode=c-archive -o ../target/bindings/libjsonnet.a c-bindings/*.go
 cd ..
 
 CLANG_ARGS=(
-    -Igo-jsonnet/c-bindings
+    -Igo-jsonnet/cpp-jsonnet/include
 )
 
 BINDGEN_ARGS=(
@@ -21,7 +21,7 @@ BINDGEN_ARGS=(
     --allowlist-item 'jsonnet_.*'
 )
 
-HEADER=go-jsonnet/cpp-jsonnet/include/libjsonnet.h
+HEADER=src/wrapper.h
 
 clang -E "$HEADER"                      \
     -o target/bindings/libjsonnet.i     \

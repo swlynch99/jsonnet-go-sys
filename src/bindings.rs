@@ -256,3 +256,56 @@ extern "C" {
     #[doc = " Complement of \\see jsonnet_vm_make."]
     pub fn jsonnet_destroy(vm: *mut JsonnetVm);
 }
+extern "C" {
+    #[doc = " Indentation level when reformatting (number of spaeces).\n\n \\param n Number of spaces, must be > 0."]
+    pub fn jsonnet_fmt_indent(vm: *mut JsonnetVm, n: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Indentation level when reformatting (number of spaeces).\n\n \\param n Number of spaces, must be > 0."]
+    pub fn jsonnet_fmt_max_blank_lines(vm: *mut JsonnetVm, n: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Preferred style for string literals (\"\" or '').\n\n \\param c String style as a char ('d', 's', or 'l' (leave))."]
+    pub fn jsonnet_fmt_string(vm: *mut JsonnetVm, c: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Preferred style for line comments (# or //).\n\n \\param c Comment style as a char ('h', 's', or 'l' (leave))."]
+    pub fn jsonnet_fmt_comment(vm: *mut JsonnetVm, c: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Whether to add an extra space on the inside of arrays."]
+    pub fn jsonnet_fmt_pad_arrays(vm: *mut JsonnetVm, v: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Whether to add an extra space on the inside of objects."]
+    pub fn jsonnet_fmt_pad_objects(vm: *mut JsonnetVm, v: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Use syntax sugar where possible with field names."]
+    pub fn jsonnet_fmt_pretty_field_names(vm: *mut JsonnetVm, v: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Sort top-level imports in alphabetical order"]
+    pub fn jsonnet_fmt_sort_imports(vm: *mut JsonnetVm, v: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " If set to 1, will reformat the Jsonnet input after desugaring."]
+    pub fn jsonnet_fmt_debug_desugaring(vm: *mut JsonnetVm, v: ::std::os::raw::c_int);
+}
+extern "C" {
+    #[doc = " Reformat a file containing Jsonnet code, return a Jsonnet string.\n\n The returned string should be cleaned up with jsonnet_realloc.\n\n \\param filename Path to a file containing Jsonnet code.\n \\param error Return by reference whether or not there was an error.\n \\returns Either Jsonnet code or the error message."]
+    pub fn jsonnet_fmt_file(
+        vm: *mut JsonnetVm,
+        filename: *const ::std::os::raw::c_char,
+        error: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    #[doc = " Reformat a string containing Jsonnet code, return a Jsonnet string.\n\n The returned string should be cleaned up with jsonnet_realloc.\n\n \\param filename Path to a file (used in error messages).\n \\param snippet Jsonnet code to execute.\n \\param error Return by reference whether or not there was an error.\n \\returns Either Jsonnet code or the error message."]
+    pub fn jsonnet_fmt_snippet(
+        vm: *mut JsonnetVm,
+        filename: *const ::std::os::raw::c_char,
+        snippet: *const ::std::os::raw::c_char,
+        error: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
