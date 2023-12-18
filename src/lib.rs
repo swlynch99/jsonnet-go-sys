@@ -1,14 +1,8 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+//! Bindings for the C interface of [go-jsonnet].
+//!
+//! [go-jsonnet]: https://github.com/google/go-jsonnet
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[allow(non_snake_case)]
+mod bindings;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub use crate::bindings::*;
