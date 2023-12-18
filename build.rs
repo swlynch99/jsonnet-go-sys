@@ -55,6 +55,14 @@ fn main() {
     if !status.success() {
         panic!("`go build` exited with a non-zero exit code");
     }
+
+    cc::Build::new()
+        .cpp(true)
+        .file("go-jsonnet/c-bindings/libjsonnet.cpp")
+        .include("go-jsonnet/c-bindings/")
+        .include(&out_dir)
+        .warnings(false)
+        .compile("jsonnet-internal");
 }
 
 fn check_go_installed() {
