@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
 
+use semver::Version;
 use target_lexicon::{Architecture, Mips32Architecture, Mips64Architecture, Triple};
 
 fn main() {
@@ -66,19 +67,54 @@ fn main() {
 }
 
 fn check_go_installed() {
-    let status = Command::new("go")
-        .arg("version")
-        .status()
-        .expect("failed to execute `go version`");
+    let result = Command::new("go").arg("version").output();
 
-    if !status.success() {
-        panic!(
-            "\
-            `go version` exited with a non-zero exit code.\n\
-            \n\
-            You need to install go in order to build libjsonnet-go-sys.\
-        "
+    let output = match result {
+        Ok(output) if output.status.success() => output,
+        _ => {
+            panic!(
+                "\
+error: failed to run `go version` successfully.
+
+jsonnet-go-sys needs a go installation in order to compile.
+To install go, you can either
+  - install it via your package manager (e.g. apt install golang-go), or
+  - install it by following the instructions at https://go.dev/doc/install
+
+Note that jsonnet-go requires at least go 1.12 to compile, so older distros may
+not have a new-enough version of go in their package repositories.
+"
+            );
+        }
+    };
+
+    // The output of `go version` looks something like
+    //
+    // go version go1.19.8 linux/amd64
+    //
+    // jsonnet-go doesn't support go versions older than 1.12 so we need to emit a
+    // warning in this case. We do this by parsing the output of `go version`. This
+    // is only for a warning, though, so if we can't parse it then we emit a log
+    // message and keep going regardless.
+    let version = output
+        .stdout
+        .split(|&c| c == b' ')
+        .skip(2)
+        .next()
+        .map(|version| version.strip_prefix(b"go").unwrap_or(version))
+        .ok_or(())
+        .and_then(|version| std::str::from_utf8(version).map_err(drop))
+        .and_then(|version| Version::parse(version).map_err(drop));
+
+    let Ok(version) = version else {
+        eprintln!(
+            "info: Unable to parse the output of `go version` - not performing version check"
         );
+        return;
+    };
+
+    if version < Version::new(1, 12, 0) {
+        println!("cargo:warning=go version is older than 1.12, jsonnet-go does not support go versions this old");
     }
 }
 

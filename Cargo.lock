@@ -22,6 +22,7 @@ name = "jsonnet-go-sys"
 version = "0.1.0"
 dependencies = [
  "cc",
+ "semver",
  "serde",
  "serde_json",
  "target-lexicon",
@@ -56,6 +57,12 @@ name = "ryu"
 version = "1.0.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f98d2aa92eebf49b69786be48e4477826b256916e84a57ff2a4f21923b48eb4c"
+
+[[package]]
+name = "semver"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "61697e0a1c7e512e84a621326239844a24d8207b4669b41bc18b32ea5cbf988b"
 
 [[package]]
 name = "serde"
