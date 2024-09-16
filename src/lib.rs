@@ -51,3 +51,8 @@
 mod bindings;
 
 pub use crate::bindings::*;
+
+// Check the README to validate that all the code within compiles and runs.
+#[cfg(doc)]
+#[doc = include_str!("../README.md")]
+mod readme {}
