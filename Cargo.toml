@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 links = "jsonnet"
+authors = ["swlynch99"]
+description = "Rust bindings for the go-jsonnet C API"
+repository = "https://github.com/swlynch99/jsonnet-go-sys"
+documentation = "https://docs.rs/jsonnet-go-sys"
 
 [build-dependencies]
 cc = "1.0.83"
