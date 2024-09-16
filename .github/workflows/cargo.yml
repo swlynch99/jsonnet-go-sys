@@ -14,6 +14,8 @@ jobs:
           submodules: true
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/setup-go@v5
+        with:
+          cache-dependency-path: go-jsonnet/go.sum
       - uses: Swatinem/rust-cache@v2
 
       - uses: taiki-e/install-action@v2
