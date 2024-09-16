@@ -1,0 +1,65 @@
+name: cargo
+on:
+  push:
+    branches:
+      main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-go@v5
+        with:
+          cache-dependency-path: go-jsonnet/go.sum
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+
+      - name: cargo nextest run
+        run: |
+          cargo nextest run         \
+            --locked                \
+            --all-targets           \
+            --all-features          \
+            --no-fail-fast          \
+            --success-output never  \
+            --failure-output final  \
+            --final-status-level skip
+
+      - name: doctests
+        run: |
+          cargo test --doc --all-features --locked
+
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+      - name: rustfmt
+        run: |
+          cargo fmt --all -- --check
+  
+  check-success:
+    name: verify all tests pass
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - test
+      - rustfmt
+
+    steps:
+      - name: fail if any dependencies failed
+        if: contains(needs.*.result, 'failure')
+        shell: bash
+        run: exit 1
+      - name: no-op
+        run: echo "All checks passed!"
