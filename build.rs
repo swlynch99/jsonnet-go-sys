@@ -8,6 +8,11 @@ use semver::Version;
 use target_lexicon::{Architecture, Mips32Architecture, Mips64Architecture, Triple};
 
 fn main() {
+    if cfg!(docsrs) {
+        println!("cargo:warning=build for docs.rs detected. Skipping build of go-jsonnet since go will not be available");
+        return;
+    }
+
     check_go_installed();
 
     let host = env::var("HOST").unwrap();
