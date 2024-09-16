@@ -1,6 +1,6 @@
 [package]
 name = "jsonnet-go-sys"
-version = "0.1.0"
+version = "0.1.0+go-jsonnet-v0.20.0"
 edition = "2021"
 license = "Apache-2.0"
 links = "jsonnet"
