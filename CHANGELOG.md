@@ -7,5 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.1.1
+### Fixed
+- The warning message when a go version is too old now prints the go version
+  that it detected.
+
 ## 0.1.0
 This is the initial release of jsonnet-go-sys.
