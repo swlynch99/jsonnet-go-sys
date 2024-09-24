@@ -1,5 +1,6 @@
 use std::env;
 use std::ffi::OsString;
+use std::io::Write;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
@@ -93,6 +94,10 @@ not have a new-enough version of go in their package repositories.
         }
     };
 
+    let mut stdout = std::io::stdout();
+    print!("go version is: ");
+    stdout.write_all(&output.stdout).unwrap();
+
     // The output of `go version` looks something like
     //
     // go version go1.19.8 linux/amd64
@@ -119,7 +124,7 @@ not have a new-enough version of go in their package repositories.
     };
 
     if version < Version::new(1, 12, 0) {
-        println!("cargo:warning=go version is older than 1.12, jsonnet-go does not support go versions this old");
+        println!("cargo:warning=go version {version} is older than 1.12, jsonnet-go does not support go versions this old");
     }
 }
 
